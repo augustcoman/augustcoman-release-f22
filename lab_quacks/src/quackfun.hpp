@@ -29,11 +29,19 @@ namespace QuackFun {
 template <typename T>
 T sum(stack<T>& s)
 {
-
+    //basecasehere
+    if (s.empty()) {
+        return 0;
+    }
+    T temp = s.top();
+    s.pop();
+    T running_sum = temp;
+    if(!s.empty()) {
+        running_sum += sum(s);
+    }
+    s.push(temp);
     // Your code here
-    return T(); // stub return value (0 for primitive types). Change this!
-                // Note: T() is the default value for objects, and 0 for
-                // primitive types
+    return running_sum;
 }
 
 /**
@@ -55,10 +63,35 @@ T sum(stack<T>& s)
  */
 bool isBalanced(queue<char> input)
 {
-
-    // @TODO: Make less optimistic
-    return true;
+    stack<char> checker;
+    while(!input.empty()) {
+        if(input.front() == '[') {
+            checker.push('[');
+        } else if(input.front() == ']') {
+            if(checker.empty()) {
+                return false;
+            }
+            checker.pop();
+        }
+        input.pop();
+    }
+    return checker.empty();
 }
+    //for(unsigned i = 0; i < input.size(); i++) {
+    //    if(input.front() == ']') {
+    //        unmatched_right++;
+    //    } else if(input.front() == '[') {
+    //       unmatched_right--;
+    //    }
+    //    if(unmatched_right < 0) {
+    //        return false;
+    //    }
+    //    input.push(input.front());
+    //    input.pop();
+    //}
+    // @TODO: Make less optimistic
+    //return unmatched_right == 0;
+
 
 /**
  * Reverses even sized blocks of items in the queue. Blocks start at size
@@ -79,8 +112,30 @@ template <typename T>
 void scramble(queue<T>& q)
 {
     stack<T> s;
-    // optional: queue<T> q2;
-
-    // Your code here
+    //queue<T> q2;
+    unsigned group_size = 1;
+    unsigned group_size_counter = 0;
+    unsigned original_size = q.size();
+    for(unsigned i = 0; i < original_size; i++) {
+        if(group_size % 2 == 0) {
+            s.push(q.front());
+        } else {
+            q.push(q.front());     //Not finished developing yet!
+        }
+        group_size_counter++;
+        if(group_size_counter == group_size) {
+            group_size_counter = 0;
+            group_size++;
+            while(!s.empty()) {
+                q.push(s.top());
+                s.pop();
+            }
+        }
+        q.pop();
+    }
+    while(!s.empty()) {
+        q.push(s.top());
+        s.pop();
+    }
 }
 }
