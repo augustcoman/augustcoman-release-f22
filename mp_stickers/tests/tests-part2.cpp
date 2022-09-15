@@ -1,3 +1,4 @@
+
 #include <catch2/catch_test_macros.hpp>
 
 #include "Image.h"
@@ -275,7 +276,6 @@ TEST_CASE("A Stickersheet with stickers placed beyond base image boundaries work
   Image i;    i.readFromFile("../tests/i.png");
 
   StickerSheet sheet(alma, 5);
-
   /**
    * For testing deep copy of base image
    * The {...} are used for a block statement
@@ -333,4 +333,3 @@ TEST_CASE("A Stickersheet with stickers placed beyond base image boundaries work
 
   REQUIRE( sheet.render() == alma );
 }
-

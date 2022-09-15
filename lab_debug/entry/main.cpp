@@ -9,6 +9,6 @@ int main() {
     // If you get PNG Decoder error, it is because there is no such PNG "in.png".
     // Kindly change the input to one of the inputs you want to test in order to
     // make it work (ie. in_01.png)
-    sketchify("../tests/in.png", "../tests/out.png");
+    sketchify("../in.png", "../tests/out_04.png");
     return 0;
 }

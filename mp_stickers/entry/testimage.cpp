@@ -17,8 +17,35 @@ int main() {
 
   std::cout << "Using Image::scale to create `scale.png`..." << std::endl;
   alma.readFromFile("../alma.png");
-  alma.scale(2);
+  alma.scale(0.5);
   alma.writeToFile("../scale2x.png");
+
+  std::cout << "Using Image::scale to create `scale.png`..." << std::endl;
+  alma.readFromFile("../alma.png");
+  alma.scale(1800, 1800);
+  alma.writeToFile("../scale2x_again.png");
+
+  std::cout << "Using Image::rotateColor to create `rotated.png`..." << std::endl;
+  alma.readFromFile("../alma.png");
+  alma.rotateColor(630);
+  alma.writeToFile("../rotated2.png");
+
+  std::cout << "Using Image::illinify to create `illinify.png`..." << std::endl;
+  alma.readFromFile("../alma.png");
+  alma.illinify();
+  alma.writeToFile("../illinified.png");
+
+  Image tester;
+
+  std::cout << "experimenting my photos..." << std::endl;
+  tester.readFromFile("../photo_me_test.png");
+  tester.rotateColor(180);
+  tester.writeToFile("../me_tinted.png");
+  tester.readFromFile("../photo_me_test.png");
+  tester.illinify();
+  tester.writeToFile("../me_infected.png");
+
+  std::cout << std::abs(-34.4) << std::endl;
 
   return 0;
 }

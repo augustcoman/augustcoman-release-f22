@@ -25,6 +25,11 @@ class Allocator
      */
     Allocator(const std::string& studentFile, const std::string& roomFile);
 
+    /**
+     * Frees up dynamic memory associated with Allocator
+     */
+    ~Allocator();
+
 
     /**
      * Calls the solving routine to allocate student letter
