@@ -1,6 +1,7 @@
 #include "cs225/PNG.h"
 #include <list>
 #include <iostream>
+#include <vector>
 
 #include "colorPicker/ColorPicker.h"
 #include "imageTraversal/ImageTraversal.h"
@@ -16,7 +17,8 @@ using namespace cs225;
  * 
  * @param png The starting image of a FloodFilledImage
  */
-FloodFilledImage::FloodFilledImage(const PNG & png) {
+FloodFilledImage::FloodFilledImage(const PNG & png): 
+  image_(new PNG(png)), traversals_(std::vector<ImageTraversal*>()), colors_(std::vector<ColorPicker*>()) {
   /** @todo [Part 2] */
 }
 
@@ -29,6 +31,8 @@ FloodFilledImage::FloodFilledImage(const PNG & png) {
  */
 void FloodFilledImage::addFloodFill(ImageTraversal & traversal, ColorPicker & colorPicker) {
   /** @todo [Part 2] */
+  traversals_.push_back(&traversal);
+  colors_.push_back(&colorPicker);
 }
 
 /**
@@ -53,5 +57,24 @@ void FloodFilledImage::addFloodFill(ImageTraversal & traversal, ColorPicker & co
 Animation FloodFilledImage::animate(unsigned frameInterval) const {
   Animation animation;
   /** @todo [Part 2] */
+  for(unsigned i = 0; i < traversals_.size(); i++) {
+    unsigned counter = frameInterval;
+    for(Point p : *traversals_[i]) {
+      if(counter == frameInterval) {
+        animation.addFrame(*image_);
+        counter = 0;
+      }
+      counter++;
+      image_->getPixel(p.x, p.y) = colors_[i]->getColor(p.x, p.y);
+    }
+    animation.addFrame(*image_);
+    //ImageTraversal::Iterator iter = traversals_[i]->begin();
+    //image_->getPixel((*iter).x, (*iter).y) = 
+  }
   return animation;
+}
+
+FloodFilledImage::~FloodFilledImage() {
+  delete image_;
+  image_ = NULL;
 }

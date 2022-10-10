@@ -8,6 +8,7 @@
 #include <cmath>
 #include <list>
 #include <stack>
+#include <vector>
 
 #include "cs225/PNG.h"
 #include "../Point.h"
@@ -35,4 +36,11 @@ public:
 private:
 	/** @todo [Part 1] */
 	/** add private members here*/
+  const PNG* image_;
+  Point start_;
+  double tolerance_;
+  std::stack<Point> traversal_;
+  //std::vector<bool> visited_;
+  std::vector<std::vector<bool>> visited_;
+  bool isValid(unsigned x, unsigned y);
 };

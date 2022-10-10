@@ -22,7 +22,12 @@ using namespace cs225;
  * @param tolerance If the current point is too different (difference larger than tolerance) with the start point,
  * it will not be included in this BFS
  */
-BFS::BFS(const PNG & png, const Point & start, double tolerance) {  
+BFS::BFS(const PNG & png, const Point & start, double tolerance): image_(&png), tolerance_(tolerance) {  
+  start_ = Point(start.x, start.y);
+  traversal_ = std::queue<Point>();
+  traversal_.push(start_);
+  visited_ = std::vector<std::vector<bool>>(image_->width(), std::vector<bool>(image_->height(), false));
+  //visited_[start.x][start.y] = true;
   /** @todo [Part 1] */
 }
 
@@ -31,7 +36,7 @@ BFS::BFS(const PNG & png, const Point & start, double tolerance) {
  */
 ImageTraversal::Iterator BFS::begin() {
   /** @todo [Part 1] */
-  return ImageTraversal::Iterator();
+  return ImageTraversal::Iterator(this);
 }
 
 /**
@@ -46,6 +51,23 @@ ImageTraversal::Iterator BFS::end() {
  * Adds a Point for the traversal to visit at some point in the future.
  */
 void BFS::add(const Point & point) {
+  /*
+  if(point.x < image_->width() - 1 && isValid(point.x + 1, point.y)) {
+    traversal_.push(Point(point.x + 1, point.y));
+  }
+  if(point.y < image_->height() - 1 && isValid(point.x, point.y + 1)) {
+    traversal_.push(Point(point.x, point.y + 1));
+  }
+  if(point.x > 0 && isValid(point.x - 1, point.y)) {
+    traversal_.push(Point(point.x - 1, point.y));
+  }
+  if(point.y > 0 && isValid(point.x, point.y - 1)) {
+    traversal_.push(Point(point.x, point.y - 1));
+  }
+  */
+  if(isValid(point.x, point.y)) {
+    traversal_.push(Point(point.x, point.y));
+  }
   /** @todo [Part 1] */
 }
 
@@ -54,7 +76,15 @@ void BFS::add(const Point & point) {
  */
 Point BFS::pop() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  if(traversal_.empty()) {
+    return Point(0, 0);
+  }
+  Point current = traversal_.front();
+  visited_[current.x][current.y] = true;
+  while(!traversal_.empty() && visited_[traversal_.front().x][traversal_.front().y]) {
+    traversal_.pop();
+  }
+  return current;
 }
 
 /**
@@ -62,7 +92,10 @@ Point BFS::pop() {
  */
 Point BFS::peek() const {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  if(traversal_.empty()) {
+    return Point(0, 0);
+  }
+  return traversal_.front();
 }
 
 /**
@@ -70,5 +103,17 @@ Point BFS::peek() const {
  */
 bool BFS::empty() const {
   /** @todo [Part 1] */
-  return true;
+  return traversal_.empty();
+}
+
+bool BFS::isValid(unsigned x, unsigned y) {
+  if(x >= image_->width() || y >= image_->height()) {
+    return false;
+  }
+  if(visited_[x][y]) {
+    return false;
+  }
+  const HSLAPixel& start_pixel = image_->getPixel(start_.x, start_.y);
+  const HSLAPixel& curr_pixel = image_->getPixel(x, y);
+  return calcDelta(start_pixel, curr_pixel) < tolerance_;
 }

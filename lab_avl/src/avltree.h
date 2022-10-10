@@ -125,6 +125,12 @@ class AVLTree
     */
     std::vector<std::string> getFunctionOrder() const;
 
+    struct AVLTree<K, V>::Node* & find_loc(Node* & subtree, const K& key);
+
+    int getBalance(Node* & subtree);
+
+    void correctHeight(Node* & subtree);
+
   private:
     /**
      * The root of the tree.

@@ -21,8 +21,18 @@
  * @param tolerance If the current point is too different (difference larger than tolerance) with the start point,
  * it will not be included in this DFS
  */
-DFS::DFS(const PNG & png, const Point & start, double tolerance) {  
+DFS::DFS(const PNG & png, const Point & start, double tolerance): image_(&png), tolerance_(tolerance) {  
+  start_ = Point(start.x, start.y);
+  traversal_ = std::stack<Point>();
+  traversal_.push(start_);
+  //visited_ = std::vector<bool>(false, image_->width() * image_->height());
+  //visited_.at(start_.x + (image_->width() * start_.y)) = true;
+  //(width, height)
+  visited_ = std::vector<std::vector<bool>>(image_->width(), std::vector<bool>(image_->height(), false));
+  //visited_[start.x][start.y] = true;
+  // Must we account for pixels out of bounds?
   /** @todo [Part 1] */
+  //visited_ = std::vector<std::vector<bool>>(std::vector<bool>(false, image_->height()), image_->width())
 }
 
 /**
@@ -30,7 +40,7 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
  */
 ImageTraversal::Iterator DFS::begin() {
   /** @todo [Part 1] */
-  return ImageTraversal::Iterator();
+  return ImageTraversal::Iterator(this);
 }
 
 /**
@@ -40,12 +50,33 @@ ImageTraversal::Iterator DFS::end() {
   /** @todo [Part 1] */
   return ImageTraversal::Iterator();
 }
+//Current plan is to make traversals NULL, and treat them as the same as traversals with empty data.
 
 /**
  * Adds a Point for the traversal to visit at some point in the future.
+ * Note: does not check bounds
  */
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
+  /*
+  if(point.x < image_->width() - 1 && isValid(point.x + 1, point.y)) {
+    traversal_.push(Point(point.x + 1, point.y));
+  }
+  if(point.y < image_->height() - 1 && isValid(point.x, point.y + 1)) {
+    traversal_.push(Point(point.x, point.y + 1));
+  }
+  if(point.x > 0 && isValid(point.x - 1, point.y)) {
+    traversal_.push(Point(point.x - 1, point.y));
+  }
+  if(point.y > 0 && isValid(point.x, point.y - 1)) {
+    traversal_.push(Point(point.x, point.y - 1));
+  }
+  */
+  if(isValid(point.x, point.y)) {
+    traversal_.push(Point(point.x, point.y));
+  }
+  //const HSLAPixel& start_pixel = image_->getPixel(start_.x, start_.y);
+  //if(point.x < image_->width() - 1 && !visited_[point.x + 1][point.y] && calculateDelta(image_->getPixel(point.x + 1, point.y), start_pixel) < tolerance_);
 }
 
 /**
@@ -53,7 +84,15 @@ void DFS::add(const Point & point) {
  */
 Point DFS::pop() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  if(traversal_.empty()) {
+    return Point(0, 0);
+  }
+  Point current = traversal_.top();
+  visited_[current.x][current.y] = true;
+  while(!traversal_.empty() && visited_[traversal_.top().x][traversal_.top().y]) {
+    traversal_.pop();
+  }
+  return current;
 }
 
 /**
@@ -61,7 +100,10 @@ Point DFS::pop() {
  */
 Point DFS::peek() const {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  if(traversal_.empty()) {
+    return Point(0, 0);
+  }
+  return traversal_.top();
 }
 
 /**
@@ -69,5 +111,20 @@ Point DFS::peek() const {
  */
 bool DFS::empty() const {
   /** @todo [Part 1] */
-  return true;
+  return traversal_.empty();
 }
+
+//Note: does not check for bounds.
+bool DFS::isValid(unsigned x, unsigned y) {
+  if(x >= image_->width() || y >= image_->height()) {
+    return false;
+  }
+  if(visited_[x][y]) {
+    return false;
+  }
+  const HSLAPixel& start_pixel = image_->getPixel(start_.x, start_.y);
+  const HSLAPixel& curr_pixel = image_->getPixel(x, y);
+  return calcDelta(start_pixel, curr_pixel) < tolerance_;
+}
+
+//Note: Code will be edited for grader compliance. The ImageTraversal should handle the add function.

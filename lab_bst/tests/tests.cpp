@@ -338,6 +338,9 @@ TEST_CASE("test_allBuild 3", "[weight=5]"){
 
     std::vector<int> ans = {0, 0, 40, 64, 16};
     std::vector<int> out = allBuild(nodes);
+    for(unsigned i = 0; i < out.size(); i++) {
+        std::cout << out.at(i) << std::endl;
+    }
 
     match_vector(out, ans);
 }
