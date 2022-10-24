@@ -43,6 +43,27 @@ class KDTree
       KDTreeNode() : point(), left(NULL), right(NULL) {}
       KDTreeNode(const Point<Dim> &point) : point(point), left(NULL), right(NULL) {}
     };
+    //Argument pack for constructor helper functions. Used while partitioning.
+    struct ConstructArgs 
+    {
+      size_t left;
+      size_t right;
+      size_t pivot;
+      int curDim;
+      ConstructArgs(): left(0), right(0), pivot(0), curDim(0) {};
+      ConstructArgs(size_t l, size_t r, int c): left(l), right(r), pivot(0), curDim(c) {}
+      ConstructArgs left_args() {
+        //This throws if left is equal to partition!
+        //assert(left != pivot);
+        return ConstructArgs(left, pivot - 1, (curDim + 1) % Dim);
+      }
+      ConstructArgs right_args() {
+        //Does not need to assert that right is partition
+        //There should be a strong guarantee that pivot is less than right.
+        //When left == right, TreeConstructHelper handles this
+        return ConstructArgs(pivot + 1, right, (curDim + 1) % Dim);
+      }
+    };
 
   public:
     /**
@@ -261,6 +282,16 @@ class KDTree
     /**
      * @todo Add your helper functions here.
      */
+    //KDTreeNode* TreeConstructHelper(vector<Point<Dim>>& newPoints, size_t left, size_t right);
+    //void quickSelect(vector<Point<Dim>>& points, size_t left, size_t right, size_t pivot);
+    //size_t partition(vector<Point<Dim>>& points, size_t left, size_t right, size_t pivot);
+    KDTreeNode* TreeConstructHelper(vector<Point<Dim>>& newPoints, ConstructArgs args);
+    void quickSelect(vector<Point<Dim>>& points, ConstructArgs args);
+    size_t partition(vector<Point<Dim>>& points, ConstructArgs args);
+    KDTreeNode* TreeConstructHelper(const KDTreeNode* other);
+    void deleteTreeHelper(KDTreeNode* target);
+    int squareDistance(const Point<Dim>& first, const Point<Dim>& second) const;
+    const KDTreeNode* findNearestNeighbor(const Point<Dim>& query, int curDim, const KDTreeNode* node) const;
 };
 
 #include "kdtree.hpp"

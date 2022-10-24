@@ -109,11 +109,11 @@ TEST_CASE("KDTree::shouldReplace Tests", "[weight=1][part=1]") {
 //   compareBinaryFiles(fname, "../tests/expected_kdtree_"+to_string(size)+".kd" );
 // }
 
-TEST_CASE("KDTree constructor, 1D (Dim=1)", "[weight=1][part=1]") {
+TEST_CASE("KDTree constructor. 1D (Dim=1)", "[weight=1][part=1]") {
   _test_linear_constructor<1>(10);
 }
 
-TEST_CASE("KDTree constructor, 3D (Dim = 3)", "[weight=1][part=1]") {
+TEST_CASE("KDTree constructor. 3D (Dim = 3)", "[weight=1][part=1]") {
   _test_linear_constructor<3>(31);
   }
 
@@ -138,11 +138,11 @@ TEST_CASE("KDTree constructor, 3D (Dim = 3)", "[weight=1][part=1]") {
 //   }
 // }
 
-TEST_CASE("KDTree::findNearestNeighbor, exact match, 1D (Dim=1)", "[weight=1][part=1]") {
+TEST_CASE("KDTree::findNearestNeighbor. exact match. 1D (Dim=1)", "[weight=1][part=1]") {
   _test_linear_nearestNeighbor<1>(10);
 }
 
-TEST_CASE("KDTree::findNearestNeighbor, exact match, 3D (Dim=3)", "[weight=1][part=1]") {
+TEST_CASE("KDTree::findNearestNeighbor. exact match. 3D (Dim=3)", "[weight=1][part=1]") {
   _test_linear_nearestNeighbor<3>(31);
   }
 
@@ -167,7 +167,7 @@ TEST_CASE("KDTree::findNearestNeighbor, exact match, 3D (Dim=3)", "[weight=1][pa
 *                    8                   *
 *****************************************/
 // Looking for O, Xs are points
-TEST_CASE("KDTree::findNearestNeighbor (2D), returns correct result", "[weight=1][part=1]") {
+TEST_CASE("KDTree::findNearestNeighbor (2D). returns correct result", "[weight=1][part=1]") {
   double coords[6][2] = {
     {-15, 7}, {6, 7}, {-13, -1},
     {-5, 0}, {14, -3}, {14, 2}
@@ -232,7 +232,7 @@ class MineActionFAIL : public Point<Dim>::MineAction {
 // O: search target
 // N: nearest neighbor
 // X: non-mine elements
-TEST_CASE("KDTree::findNearestNeighbor (2D), testing correct path", "[weight=1][part=1]") {
+TEST_CASE("KDTree::findNearestNeighbor (2D). testing correct path", "[weight=1][part=1]") {
     double coords[10][2] = {
       {-8, 7}, {-6, 4}, {-5, 6}, {-3, 5}, {0, 7},
       //                ^NN
@@ -273,7 +273,7 @@ TEST_CASE("KDTree::findNearestNeighbor (2D), testing correct path", "[weight=1][
 /*
 
 */
-TEST_CASE("KDTree::findNearestNeighbor (2D), testing correct path with fence jumping", "[weight=1][part=1]") {
+TEST_CASE("KDTree::findNearestNeighbor (2D). testing correct path with fence jumping", "[weight=1][part=1]") {
   double coords[20][2] = {{84, 44},  // mine
                           {74, 0},   // mine
                           {54, 62},  // mine
@@ -324,7 +324,7 @@ TEST_CASE("KDTree::findNearestNeighbor (2D), testing correct path with fence jum
 }
 
 
-TEST_CASE("KDTree::findNearestNeighbor (3D), testing tie-breaking", "[weight=1][part=1]") {
+TEST_CASE("KDTree::findNearestNeighbor (3D). testing tie-breaking", "[weight=1][part=1]") {
   double coords[14][3] = {{0, 0, 100},   // mine
                           {0, 100, 100}, // mine
                           {0, 50, 50},   // mine
@@ -372,7 +372,7 @@ TEST_CASE("KDTree::findNearestNeighbor (3D), testing tie-breaking", "[weight=1][
 }
 
 
-TEST_CASE("KDTree::findNearestNeighbor (3D), testing that left recursion does not include the root", "[weight=1][part=1]") {
+TEST_CASE("KDTree::findNearestNeighbor (3D). testing that left recursion does not include the root", "[weight=1][part=1]") {
   double coords[10][3] = {
     {5, 3, 1}, {3, 1, 10}, {2, 0, 8}, {4, 3, 0}, {0, 2, 9},
     {10, 10, 10}, {11, 11, 11}, {12, 12, 12}, {13, 13, 13}, {14, 14, 14}
