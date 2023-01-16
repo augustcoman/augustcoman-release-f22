@@ -9,7 +9,7 @@
 
 using namespace std;
 
-TEST_CASE("SC::testRemoveEASY", "[valgrind][weight=6]")
+TEST_CASE("SC::testRemoveEASY", "[valgrind][weight=6][schash]")
 {
 	TextFile infile("../tests/textEasy.txt");
 	SCHashTable<string, int> hashTable(32);
@@ -31,7 +31,7 @@ TEST_CASE("SC::testRemoveEASY", "[valgrind][weight=6]")
 	REQUIRE(true);
 }
 
-TEST_CASE("SC::testRemoveHard", "[valgrind][weight=10]")
+TEST_CASE("SC::testRemoveHard", "[valgrind][weight=10][schash]")
 {
 	TextFile infile("../tests/textHard.txt");
 	SCHashTable<string, int> hashTable(32);
@@ -61,7 +61,7 @@ TEST_CASE("SC::testRemoveHard", "[valgrind][weight=10]")
 	REQUIRE(true);
 }
 
-TEST_CASE("SC::testResizeOnce", "[valgrind][weight=7]")
+TEST_CASE("SC::testResizeOnce", "[valgrind][weight=7][schash]")
 {
 	TextFile infile("../tests/textLong.txt");
 	SCHashTable<string, int> hashTable(16);
@@ -84,7 +84,7 @@ TEST_CASE("SC::testResizeOnce", "[valgrind][weight=7]")
 	REQUIRE(true);
 }
 
-TEST_CASE("SC::testResizeAll", "[valgrind][weight=11]")
+TEST_CASE("SC::testResizeAll", "[valgrind][weight=11][schash]")
 {
 	vector<string> strings;
 	for (int i = 'a'; i <= 'z'; i++)
@@ -113,7 +113,7 @@ TEST_CASE("SC::testResizeAll", "[valgrind][weight=11]")
 	REQUIRE(true);
 }
 
-TEST_CASE("SC::testInsertEasy", "[valgrind][weight=6]")
+TEST_CASE("SC::testInsertEasy", "[valgrind][weight=6][schash]")
 {
 	TextFile infile("../tests/textEasy.txt");
 	SCHashTable<string, int> hashTable(32);
@@ -134,7 +134,7 @@ TEST_CASE("SC::testInsertEasy", "[valgrind][weight=6]")
 	REQUIRE(true);
 }
 
-TEST_CASE("SC::testInsertHard", "[valgrind][weight=10]")
+TEST_CASE("SC::testInsertHard", "[valgrind][weight=10][schash]")
 {
 	TextFile infile("../tests/textHard.txt");
 	SCHashTable<string, int> hashTable(32);

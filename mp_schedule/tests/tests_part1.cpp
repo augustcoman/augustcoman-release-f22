@@ -8,7 +8,7 @@
 #include "schedule.h"
 #include "tests_util.h"
 
-TEST_CASE("file_to_V2D Public Test 1", "[weight=5]") {
+TEST_CASE("file_to_V2D Public Test 1", "[weight=5][part=1]") {
     V2D roster = file_to_V2D("../tests/data/c5_s10_3_roster.csv");
 
     const V2D correct_roster = {{"CS577", "JydY", "MnWd", "tnkL"},\
@@ -36,7 +36,7 @@ TEST_CASE("file_to_V2D Public Test 1", "[weight=5]") {
     REQUIRE(students == answer);
 }
 
-TEST_CASE("file_to_V2D Public Test 2", "[weight=5]") {
+TEST_CASE("file_to_V2D Public Test 2", "[weight=5][part=1]") {
     V2D roster = file_to_V2D("../tests/data/c10_s50_2_roster.csv");
 
     const V2D correct_roster = {
@@ -78,7 +78,7 @@ TEST_CASE("file_to_V2D Public Test 2", "[weight=5]") {
     REQUIRE( students == answer);
 }
 
-TEST_CASE("clean() Public Test 1", "[weight=5]") {
+TEST_CASE("clean() Public Test 1", "[weight=5][part=1]") {
     const V2D students = {
     {"JydY", "CS577"}, \
     {"MnWd", "CS577", "CS395"}, \
@@ -108,7 +108,7 @@ TEST_CASE("clean() Public Test 1", "[weight=5]") {
     REQUIRE(user == answer);
 }
 
-TEST_CASE("clean() Public Test 2", "[weight=5]") {
+TEST_CASE("clean() Public Test 2", "[weight=5][part=1]") {
     const V2D students = {
     {"RAq7", "CS502", "CS259", "CS245"}, \
     {"4GUp", "CS502"}, \

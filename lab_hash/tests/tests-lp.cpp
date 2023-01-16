@@ -9,7 +9,7 @@
 
 using namespace std;
 
-TEST_CASE("LP::testRemoveEASY", "[valgrind][weight=6]")
+TEST_CASE("LP::testRemoveEASY", "[valgrind][weight=6][lphash]")
 {
 	TextFile infile("../tests/textEasy.txt");
 	LPHashTable<string, int> hashTable(32);
@@ -21,10 +21,12 @@ TEST_CASE("LP::testRemoveEASY", "[valgrind][weight=6]")
 	hashTable.insert("__SENTINEL__", 0);
 	if (!hashTable.keyExists("__SENTINEL__"))
 		FAIL("Insert did not work");
-
 	hashTable.remove("all");
 	if (hashTable.keyExists("all"))
 		FAIL("Did not remove key: 'all'");
+	//if(true) {
+	//	throw;
+	//}
 	hashTable.remove("base");
 	if (hashTable.keyExists("base"))
 		FAIL("Did not remove key: 'base'");
@@ -32,7 +34,7 @@ TEST_CASE("LP::testRemoveEASY", "[valgrind][weight=6]")
 	REQUIRE(true);
 }
 
-TEST_CASE("LP::testRemoveHard", "[valgrind][weight=10]")
+TEST_CASE("LP::testRemoveHard", "[valgrind][weight=10][lphash]")
 {
 	TextFile infile("../tests/textHard.txt");
 	LPHashTable<string, int> hashTable(32);
@@ -62,7 +64,7 @@ TEST_CASE("LP::testRemoveHard", "[valgrind][weight=10]")
 	REQUIRE(true);
 }
 
-TEST_CASE("LP::testResizeOnce", "[valgrind][weight=7]")
+TEST_CASE("LP::testResizeOnce", "[valgrind][weight=7][lphash]")
 {
 	TextFile infile("../tests/textLong.txt");
 	LPHashTable<string, int> hashTable(16);
@@ -85,7 +87,7 @@ TEST_CASE("LP::testResizeOnce", "[valgrind][weight=7]")
 	REQUIRE(true);
 }
 
-TEST_CASE("LP::testResizeAll", "[valgrind][weight=11]")
+TEST_CASE("LP::testResizeAll", "[valgrind][weight=11][lphash]")
 {
 	vector<string> strings;
 	for (int i = 'a'; i <= 'z'; i++)
@@ -114,7 +116,7 @@ TEST_CASE("LP::testResizeAll", "[valgrind][weight=11]")
 	REQUIRE(true);
 }
 
-TEST_CASE("LP::testInsertEasy", "[valgrind][weight=6]")
+TEST_CASE("LP::testInsertEasy", "[valgrind][weight=6][lphash]")
 {
 	TextFile infile("../tests/textEasy.txt");
 	LPHashTable<string, int> hashTable(32);
@@ -135,7 +137,7 @@ TEST_CASE("LP::testInsertEasy", "[valgrind][weight=6]")
 	REQUIRE(true);
 }
 
-TEST_CASE("LP::testInsertHard", "[valgrind][weight=10]")
+TEST_CASE("LP::testInsertHard", "[valgrind][weight=10][lphash]")
 {
 	TextFile infile("../tests/textHard.txt");
 	LPHashTable<string, int> hashTable(32);

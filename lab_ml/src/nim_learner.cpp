@@ -5,6 +5,7 @@
 
 #include "nim_learner.h"
 #include <ctime>
+#include <string>
 
 
 /**
@@ -26,6 +27,41 @@
  */
 NimLearner::NimLearner(unsigned startingTokens) : g_(true, true) {
     /* Your code goes here! */
+    g_.insertVertex("p1-" + std::to_string(startingTokens));
+    startingVertex_ = "p1-" + std::to_string(startingTokens);
+    if(startingTokens == 0) {
+      return;
+    }
+    for(unsigned i = startingTokens - 1; i > 0; i--) {
+      g_.insertVertex("p2-" + std::to_string(i));
+      g_.insertVertex("p1-" + std::to_string(i - 1));
+    }
+    g_.insertVertex("p2-0");
+    for(unsigned i = startingTokens; i > 0; i--) {
+      std::string p1v = "p1-" + std::to_string(i);
+      std::string p2v = "p2-" + std::to_string(i);
+      std::string p1take1 = "p1-" + std::to_string(i - 1);
+      std::string p2take1 = "p2-" + std::to_string(i - 1);
+      std::string p1take2 = "p1-" + std::to_string(i - 2);
+      std::string p2take2 = "p2-" + std::to_string(i - 2);
+     //Note: insertEdge creates non-existent verticies
+      if(g_.vertexExists(p1v) && g_.vertexExists(p2take1)) {
+        g_.insertEdge(p1v, p2take1);
+        g_.setEdgeWeight(p1v, p2take1, 0);
+      }
+      if(g_.vertexExists(p1v) &&g_.vertexExists(p2take2)) {
+        g_.insertEdge(p1v, p2take2);
+        g_.setEdgeWeight(p1v, p2take2, 0);
+      }
+      if(g_.vertexExists(p2v) &&g_.vertexExists(p1take1)) {
+        g_.insertEdge(p2v, p1take1);
+        g_.setEdgeWeight(p2v, p1take1, 0);
+      }
+      if(g_.vertexExists(p2v) &&g_.vertexExists(p1take2)) {
+        g_.insertEdge(p2v, p1take2);
+        g_.setEdgeWeight(p2v, p1take2, 0);
+      }
+    }
 }
 
 /**
@@ -39,7 +75,21 @@ NimLearner::NimLearner(unsigned startingTokens) : g_(true, true) {
  */
 std::vector<Edge> NimLearner::playRandomGame() const {
   vector<Edge> path;
+  //if(g_.getAdjacent(startingVertex_).size() > 2) {
+  //  throw;
+  //}
+  //if(g_.getEdge("p1-3", "p2-2").getWeight() == -1) {
+  //  throw;
+  //}
  /* Your code goes here! */
+  std::string traveler = startingVertex_;
+  while(!g_.getAdjacent(traveler).empty()) {
+    //Gets a random adjacent vertex. All adjacent verticies are of directed nature.
+    //Should be 1 or 2 adjacent verticies
+    std::string next = g_.getAdjacent(traveler).at(rand() % g_.getAdjacent(traveler).size());
+    path.push_back(g_.getEdge(traveler, next));
+    traveler = next;
+  }
   return path;
 }
 
@@ -61,6 +111,20 @@ std::vector<Edge> NimLearner::playRandomGame() const {
  */
 void NimLearner::updateEdgeWeights(const std::vector<Edge> & path) {
  /* Your code goes here! */
+ if(path.empty()) {
+  return;
+ }
+ //If player 1 wins, add 1. Else add -1.
+ int p1_wins_change = (path.back().dest.substr(0, 2) == "p2")?1:-1;
+ for(unsigned i = 0; i < path.size(); i++) {
+  if(path.at(i).source.substr(0, 2) == "p1") {
+    int updated_weight = g_.getEdgeWeight(path.at(i).source, path.at(i).dest) + p1_wins_change;
+    g_.setEdgeWeight(path.at(i).source, path.at(i).dest, updated_weight);
+  } else {
+    int updated_weight = g_.getEdgeWeight(path.at(i).source, path.at(i).dest) - p1_wins_change;
+    g_.setEdgeWeight(path.at(i).source, path.at(i).dest, updated_weight);
+  }
+ }
 }
 
 /**

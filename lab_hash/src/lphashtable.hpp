@@ -79,9 +79,25 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
      * **Do this check *after* increasing elems (but before inserting)!!**
      * Also, don't forget to mark the cell for probing with should_probe!
      */
-
-    (void) key;   // prevent warnings... When you implement this function, remove this line.
-    (void) value; // prevent warnings... When you implement this function, remove this line.
+    unsigned index = hashes::hash(key, size);
+    unsigned same = index;
+    while(table[index] != NULL) {
+        index++;
+        if(index == size) {
+            index = 0;
+        }
+        if(index == same) {
+            return;
+        }
+    }
+    table[index] = new std::pair<K, V>(key, value);
+    should_probe[index] = true;
+    elems++;
+    if(shouldResize()) {
+        resizeTable();
+    }
+    //(void) key;   // prevent warnings... When you implement this function, remove this line.
+    //(void) value; // prevent warnings... When you implement this function, remove this line.
 }
 
 template <class K, class V>
@@ -90,6 +106,12 @@ void LPHashTable<K, V>::remove(K const& key)
     /**
      * @todo: implement this function
      */
+    int element_index = findIndex(key);
+    if(element_index < 0) {
+        return;
+    }
+    delete table[element_index];
+    table[element_index] = NULL;
 }
 
 template <class K, class V>
@@ -101,7 +123,20 @@ int LPHashTable<K, V>::findIndex(const K& key) const
      *
      * Be careful in determining when the key is not in the table!
      */
-
+    unsigned index = hashes::hash(key, size);
+    unsigned same = index;
+    while(should_probe[index]) {
+        if(table[index] != NULL && table[index]->first == key) {
+            return index;
+        }
+        index++;
+        if(index == size) {
+            index = 0;
+        }
+        if(index == same) {
+            return -1;
+        }
+    }
     return -1;
 }
 
@@ -159,4 +194,24 @@ void LPHashTable<K, V>::resizeTable()
      *
      * @hint Use findPrime()!
      */
+    //Might need to reset elems count
+    std::pair<K, V> **old = table;
+    size_t oldsize = size;
+    size = findPrime(size * 2);
+    table = new std::pair<K, V>*[size];
+    delete[] should_probe;
+    should_probe = new bool[size];
+    for (size_t i = 0; i < size; i++) {
+        table[i] = NULL;
+        should_probe[i] = false;
+    }
+    elems = 0;
+    for(size_t i = 0; i < oldsize; i++) {
+        if(old[i] != NULL) {
+            insert(old[i]->first, old[i]->second);
+            delete old[i];
+            elems++;
+        }
+    }
+    delete[] old;
 }

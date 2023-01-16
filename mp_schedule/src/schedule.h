@@ -54,3 +54,9 @@ V2D clean(const V2D & cv, const V2D & sv);
  * @return A 2D vector which each row is a timeslot with all the courses scheduled for that time
  */
 V2D schedule(const V2D &courses, const std::vector<std::string> &timeslots);
+
+/**
+ * Given a valid schedule, constructs an unordered map with strings as the key, and a vector of 'adjacent' strings as value.
+ * Strings are adjacent if there is at least one student who takes both courses, thus giving way to 'conflict'
+*/
+std::unordered_map<std::string, std::set<std::string>> getClassMap(const V2D &courses);

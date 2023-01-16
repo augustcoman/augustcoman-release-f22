@@ -1,4 +1,5 @@
 #include <vector>
+#include <iostream>
 
 #include "nim_graph/edge.h"
 #include "nim_learner.h"
